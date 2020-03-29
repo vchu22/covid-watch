@@ -1,1 +1,1 @@
-# covid19-visualization
+# Covid-19 Visualization
