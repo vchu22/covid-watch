@@ -1,14 +1,23 @@
 import React from 'react';
 
-const Display = () => {
-  let country = 'All';
+const Display = ({ details }) => {
+  console.log(details);
+  let {
+    country,
+    cases,
+    deaths,
+    deathsPerOneMillion,
+    recovered,
+    active,
+  } = details;
   return (
     <div className="data-display">
       <div>Country: {country} </div>
-      <div>Total cases: </div>
-      <div>Deaths: </div>
-      <div>Recovery: </div>
-      <div>Active: </div>
+      <div>Total cases: {cases}</div>
+      <div>Deaths: {deaths}</div>
+      <div>Deaths per Million: {deathsPerOneMillion}</div>
+      <div>Recovery: {recovered}</div>
+      <div>Active: {active}</div>
     </div>
   );
 };
