@@ -8,6 +8,10 @@ const DataDisplay = styled.div`
   margin: 50px 10vw;
   font-family: 'PT Sans', sans-serif;
 `;
+const Img = styled.img`
+  width: 26px;
+  height: 20px;
+`;
 
 const format = number =>
   number.toLocaleString(navigator.language, {
@@ -15,7 +19,7 @@ const format = number =>
   });
 
 const Display = ({ details }) => {
-  let {
+  const {
     country,
     cases,
     deaths,
@@ -23,10 +27,13 @@ const Display = ({ details }) => {
     recovered,
     active,
   } = details;
+  const { flag } = details.countryInfo;
   console.log(details);
   return (
     <DataDisplay>
-      <div>Country: {country} </div>
+      <div>
+        <Img src={flag} /> {country}{' '}
+      </div>
       <div>Total cases: {format(cases)}</div>
       <div>Deaths: {format(deaths)}</div>
       <div>
