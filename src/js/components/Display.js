@@ -29,6 +29,7 @@ const Display = ({ details }) => {
     active,
   } = details;
   const { flag } = details.countryInfo;
+
   return (
     <DataDisplay>
       <div>
