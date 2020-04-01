@@ -24,11 +24,11 @@ const Display = ({ details }) => {
     cases,
     deaths,
     deathsPerOneMillion,
+    critical,
     recovered,
     active,
   } = details;
   const { flag } = details.countryInfo;
-  console.log(details);
   return (
     <DataDisplay>
       <div>
@@ -41,6 +41,7 @@ const Display = ({ details }) => {
           ? 'Deaths per Million: ' + format(deathsPerOneMillion)
           : null}
       </div>
+      <div>Critical: {format(critical)}</div>
       <div>Recovery: {format(recovered)}</div>
       <div>Active: {format(active)}</div>
     </DataDisplay>
