@@ -39,7 +39,6 @@ class App extends Component {
       this.setState({ countriesData });
     });
   }
-  componentDidUpdate() {}
   render() {
     let { countriesData, selectedCountry } = this.state;
     let countries = Object.keys(countriesData).sort();
