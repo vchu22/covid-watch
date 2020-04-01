@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 import Display from './Display';
+
+const Header = styled.h2`
+  font-size: 3em;
+  text-align: center;
+  font-family: 'Exo', sans-serif;
+  // color: DarkSlateGray;
+`;
 
 class App extends Component {
   constructor() {
@@ -19,10 +27,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h2>Data Visualization for COVID-19 Trend</h2>
+        <Header>Data Visualization for COVID-19 Trend</Header>
         {/* <p>Please the country you would like get data on:</p> */}
-        {this.state.countries.map(details => {
-          return <Display details={details} />;
+        {this.state.countries.map((details, idx) => {
+          return <Display key={idx} details={details} />;
         })}
       </div>
     );
