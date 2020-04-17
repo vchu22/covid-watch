@@ -29,10 +29,10 @@ class App extends Component {
     this.setState({ selectedCountry });
   }
   componentDidMount() {
-    axios.get(`https://corona.lmao.ninja/countries`).then(res => {
+    axios.get(`https://corona.lmao.ninja/v2/countries`).then((res) => {
       const rawData = res.data;
       let countriesData = {};
-      rawData.forEach(elem => {
+      rawData.forEach((elem) => {
         const name = elem.country;
         countriesData[name] = elem;
       });
