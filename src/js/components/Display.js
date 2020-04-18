@@ -70,18 +70,18 @@ class Display extends Component {
         <div>
           <Img src={flag} /> {country}{' '}
         </div>
-        <Card title="Total cases" number={cases}></Card>
-        <Card title="Deaths" number={deaths}></Card>
-        <Card title="Total cases" number={cases}></Card>
+        <Card title="Total cases" number={cases} color="#ff6600"></Card>
+        <Card title="Deaths" number={deaths} color="#e60000"></Card>
         {deathsPerOneMillion ? (
           <Card
             title="Deaths per Million: "
             number={deathsPerOneMillion}
+            color="#ff0066"
           ></Card>
         ) : null}
-        <Card title="Critical" number={critical}></Card>
-        <Card title="Recovery" number={recovered}></Card>
-        <Card title="Active" number={active}></Card>
+        <Card title="Critical" number={critical} color="#6600cc"></Card>
+        <Card title="Recovery" number={recovered} color="#33cc33"></Card>
+        <Card title="Active" number={active} color="#0099ff"></Card>
         <h4>Historical Data</h4>
         <LineChart
           width={1000}

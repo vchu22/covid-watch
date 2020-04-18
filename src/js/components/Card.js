@@ -13,11 +13,11 @@ const format = (number) =>
     minimumFractionDigits: 0,
   });
 
-const Card = ({ title, number }) => {
+const Card = ({ title, number, color }) => {
   return (
     <CardDiv>
       <h3>{title}</h3>
-      <p>{format(number)}</p>
+      <p style={{ color: color }}>{format(number)}</p>
     </CardDiv>
   );
 };
