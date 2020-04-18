@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
+import Card from './Card';
 
 const DataDisplay = styled.div`
   font-size: 1.5em;
@@ -22,11 +23,6 @@ const Img = styled.img`
   width: 26px;
   height: 20px;
 `;
-
-const format = number =>
-  number.toLocaleString(navigator.language, {
-    minimumFractionDigits: 0,
-  });
 
 // Component
 class Display extends Component {
@@ -43,7 +39,7 @@ class Display extends Component {
       .get(
         `https://corona.lmao.ninja/v2/historical/${this.props.details.country}`
       )
-      .then(res => {
+      .then((res) => {
         const { cases, deaths, recovered } = res.data.timeline;
         let histData = [];
         for (let [date, c] of Object.entries(cases)) {
@@ -74,16 +70,18 @@ class Display extends Component {
         <div>
           <Img src={flag} /> {country}{' '}
         </div>
-        <div>Total cases: {format(cases)}</div>
-        <div>Deaths: {format(deaths)}</div>
-        <div>
-          {deathsPerOneMillion
-            ? 'Deaths per Million: ' + format(deathsPerOneMillion)
-            : null}
-        </div>
-        <div>Critical: {format(critical)}</div>
-        <div>Recovery: {format(recovered)}</div>
-        <div>Active: {format(active)}</div>
+        <Card title="Total cases" number={cases}></Card>
+        <Card title="Deaths" number={deaths}></Card>
+        <Card title="Total cases" number={cases}></Card>
+        {deathsPerOneMillion ? (
+          <Card
+            title="Deaths per Million: "
+            number={deathsPerOneMillion}
+          ></Card>
+        ) : null}
+        <Card title="Critical" number={critical}></Card>
+        <Card title="Recovery" number={recovered}></Card>
+        <Card title="Active" number={active}></Card>
         <h4>Historical Data</h4>
         <LineChart
           width={1000}
