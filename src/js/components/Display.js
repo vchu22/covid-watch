@@ -17,11 +17,17 @@ const DataDisplay = styled.div`
   text-align: center;
   background-color: WhiteSmoke;
   margin: 50px 10vw;
+  padding: 10px;
   font-family: 'PT Sans', sans-serif;
 `;
-const Img = styled.img`
-  width: 26px;
-  height: 20px;
+const CountryDiv = styled.div`
+  margin: 20px;
+  font-size: 38px;
+  & > img {
+    width: 40px;
+    height: 32px;
+    margin: 0 10px;
+  }
 `;
 
 // Component
@@ -67,9 +73,9 @@ class Display extends Component {
 
     return (
       <DataDisplay>
-        <div>
-          <Img src={flag} /> {country}{' '}
-        </div>
+        <CountryDiv>
+          <img src={flag} /> {country}{' '}
+        </CountryDiv>
         <Card title="Total cases" number={cases} color="#ff6600"></Card>
         <Card title="Deaths" number={deaths} color="#e60000"></Card>
         {deathsPerOneMillion ? (
