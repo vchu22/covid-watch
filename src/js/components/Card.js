@@ -9,7 +9,7 @@ const CardDiv = styled.div`
   box-shadow: 1px 1px 8px #aaaaaa;
   cursor: default;
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #f4f4f4;
   }
 `;
 

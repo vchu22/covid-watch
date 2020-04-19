@@ -18,11 +18,13 @@ const DataDisplay = styled.div`
   background-color: WhiteSmoke;
   margin: 50px 10vw;
   padding: 10px;
+  box-shadow: 1px 1px 8px #555555;
   font-family: 'PT Sans', sans-serif;
 `;
 const CountryDiv = styled.div`
   margin: 20px;
   font-size: 38px;
+  font-family: 'Raleway', sans-serif;
   & > img {
     width: 40px;
     height: 32px;
@@ -80,7 +82,7 @@ class Display extends Component {
         <Card title="Deaths" number={deaths} color="#e60000"></Card>
         {deathsPerOneMillion ? (
           <Card
-            title="Deaths per Million: "
+            title="Deaths per Million"
             number={deathsPerOneMillion}
             color="#ff0066"
           ></Card>
