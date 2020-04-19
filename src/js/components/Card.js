@@ -4,8 +4,13 @@ import styled from 'styled-components';
 const CardDiv = styled.div`
   background-color: #fff;
   display: inline-block;
-  padding: 5px 20px;
+  padding: 5px 30px;
   margin: 20px;
+  box-shadow: 1px 1px 8px #aaaaaa;
+  cursor: default;
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 const format = (number) =>
