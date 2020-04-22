@@ -1,49 +1,88 @@
-import { createStore, applyMiddleware} from 'redux';
+import { EventEmitter } from 'events';
+import dispatcher from './dispatcher';
 import axios from 'axios';
-import loggingMiddleware from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
 
-const initialState = {
-    selectedCountry: 'USA',
-    countriesData: {}
-}
+class DataStore extends EventEmitter {
+  constructor() {
+    super();
+    this.selectedCountry = 'USA';
+    this.countriesData = {};
+    this.histData = [];
 
-const CHANGED_COUNTRY = 'CHANGED_COUNTRY';
-const changedCountry = () => {type: CHANGED_COUNTRY};
+    this.fetchHistoricalData = this.fetchHistoricalData.bind(this);
+  }
 
-const GOT_COUNTRIES_DATA = 'GOT_COUNTRIES_DATA';
-const gotCountriesData = () => {type: GOT_COUNTRIES_DATA};
+  changeCountry(selectedCountry) {
+    this.selectedCountry = selectedCountry;
+    this.fetchHistoricalData(this.selectedCountry);
+    this.emit('change');
+  }
 
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case CHANGED_COUNTRY:
-            return { ...state, selectedCountry: state.selectedCountry}
-        case GOT_COUNTRIES_DATA:
-            return { ...state, countriesData: state.countriesData }
-        default:
-            return state
-    }
-}
-
-const middlewares = applyMiddleware(loggingMiddleware, thunkMiddleware);
-const store = createStore(reducer, middlewares);
-
-// thunk creators
-export const changeCountry = (country) => {
-    return dispatch => {
-        dispatch(changedCountry(country))
-    }
-}
-export const getCountriesData = () => {
-    return async dispatch => {
-        const rawData = await axios.get('/https://corona.lmao.ninja/countries');
-        let countriesData = {};
-        rawData.forEach(elem => {
-            const name = elem.country;
-            countriesData[name] = elem;
+  fetchCountriesData() {
+    let countriesData = {};
+    axios
+      .get('https://corona.lmao.ninja/v2/countries')
+      .then((res) => {
+        res.data.forEach((elem) => {
+          const name = elem.country;
+          countriesData[name] = elem;
         });
-        dispatch(gotCountriesData(countriesData));
-    };
+      })
+      .then(() => {
+        this.countriesData = countriesData;
+        this.emit('change');
+      });
+  }
+
+  fetchHistoricalData(country) {
+    let histData = [];
+    axios
+      .get(`https://corona.lmao.ninja/v2/historical/${country}`)
+      .then((res) => {
+        console.log(res.data);
+        const { cases, deaths, recovered } = res.data.timeline;
+        for (let [date, c] of Object.entries(cases)) {
+          const d = deaths[date];
+          const r = recovered[date];
+          histData.push({ date, cases: c, deaths: d, recovered: r });
+        }
+      })
+      .then(() => {
+        this.histData = histData;
+        this.emit('change');
+      });
+  }
+
+  getSelectedCountry() {
+    return this.selectedCountry;
+  }
+
+  getCountriesData() {
+    return this.countriesData;
+  }
+
+  getHistoricalData() {
+    return this.histData;
+  }
+
+  handleActions(action) {
+    switch (action.type) {
+      case 'CHANGE_COUNTRY': {
+        this.changeCountry(action.selectedCountry);
+      }
+      case 'GET_COUNTRIES_DATA': {
+        this.fetchCountriesData();
+      }
+      case 'GET_HISTORICAL_DATA': {
+        this.fetchHistoricalData(action.country);
+      }
+      default:
+        return state;
+    }
+  }
 }
 
-export default store;
+const dataStore = new DataStore();
+dispatcher.register(dataStore.handleActions.bind(dataStore));
+window.dispatcher = dispatcher;
+export default dataStore;

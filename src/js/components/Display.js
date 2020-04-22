@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import DataStore from '../store';
+import { fetchHistoricalData } from '../actions';
 import styled from 'styled-components';
 import {
   ResponsiveContainer,
@@ -38,30 +39,28 @@ class Display extends Component {
   constructor() {
     super();
     this.state = {
-      histData: [],
+      selectedCountry: DataStore.getSelectedCountry(),
+      countriesData: DataStore.getCountriesData(),
+      histData: DataStore.getHistoricalData(),
     };
   }
 
   componentDidMount() {
-    axios
-      .get(
-        `https://corona.lmao.ninja/v2/historical/${this.props.details.country}`
-      )
-      .then((res) => {
-        const { cases, deaths, recovered } = res.data.timeline;
-        let histData = [];
-        for (let [date, c] of Object.entries(cases)) {
-          const d = deaths[date];
-          const r = recovered[date];
-          histData.push({ date, cases: c, deaths: d, recovered: r });
-        }
-        this.setState({
-          histData,
-        });
+    fetchHistoricalData(this.state.selectedCountry);
+    DataStore.on('change', () => {
+      this.setState({
+        selectedCountry: DataStore.getSelectedCountry(),
+        countriesData: DataStore.getCountriesData(),
+        histData: DataStore.getHistoricalData(),
       });
+    });
   }
 
   render() {
+    const selectedCountry = this.state.selectedCountry;
+    const countriesData = this.state.countriesData;
+    const details = countriesData ? countriesData[selectedCountry] : {};
+    window.state = this.state;
     const {
       country,
       cases,
@@ -70,14 +69,15 @@ class Display extends Component {
       critical,
       recovered,
       active,
-    } = this.props.details;
-    const { flag } = this.props.details.countryInfo;
+      countryInfo,
+    } = details || {};
 
-    return (
+    return details ? (
       <DataDisplay>
         <CountryDiv>
-          <img src={flag} /> {country}{' '}
+          <img src={countryInfo.flag} /> {country}{' '}
         </CountryDiv>
+
         <Card title="Total cases" number={cases} color="#ff6600"></Card>
         <Card title="Deaths" number={deaths} color="#e60000"></Card>
         {deathsPerOneMillion ? (
@@ -130,7 +130,7 @@ class Display extends Component {
           </AreaChart>
         </ResponsiveContainer>
       </DataDisplay>
-    );
+    ) : null;
   }
 }
 
