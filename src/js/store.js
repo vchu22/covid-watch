@@ -39,7 +39,6 @@ class DataStore extends EventEmitter {
     axios
       .get(`https://corona.lmao.ninja/v2/historical/${country}`)
       .then((res) => {
-        console.log(res.data);
         const { cases, deaths, recovered } = res.data.timeline;
         for (let [date, c] of Object.entries(cases)) {
           const d = deaths[date];
