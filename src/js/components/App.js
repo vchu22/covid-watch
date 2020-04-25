@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header>Data Visualization for COVID-19 Trend</Header>
+        <Header>COVID Watch</Header>
         <CountrySelection />
         <Display />
       </div>
