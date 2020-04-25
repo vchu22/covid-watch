@@ -55,7 +55,6 @@ class Display extends Component {
     const selectedCountry = this.state.selectedCountry;
     const countriesData = this.state.countriesData;
     const details = countriesData ? countriesData[selectedCountry] : {};
-    window.state = this.state;
     const {
       country,
       cases,

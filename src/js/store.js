@@ -75,13 +75,10 @@ class DataStore extends EventEmitter {
       case 'GET_HISTORICAL_DATA': {
         this.fetchHistoricalData(action.country);
       }
-      default:
-        return state;
     }
   }
 }
 
 const dataStore = new DataStore();
 dispatcher.register(dataStore.handleActions.bind(dataStore));
-window.dispatcher = dispatcher;
 export default dataStore;
