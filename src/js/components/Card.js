@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import CountUp from 'react-countup';
 
 const CardDiv = styled.div`
   background-color: #fff;
   display: inline-block;
-  padding: 5px 30px;
+  padding: 5px 30px 30px;
   margin: 20px;
   box-shadow: 1px 1px 8px #aaaaaa;
   cursor: default;
@@ -13,16 +14,19 @@ const CardDiv = styled.div`
   }
 `;
 
-const format = (number) =>
-  number.toLocaleString(navigator.language, {
-    minimumFractionDigits: 0,
-  });
-
 const Card = ({ title, number, color }) => {
   return (
     <CardDiv>
       <h3>{title}</h3>
-      <p style={{ color: color }}>{format(number)}</p>
+      <CountUp
+        style={{
+          color,
+        }}
+        start={0}
+        end={number}
+        duration={2.5}
+        separator=","
+      ></CountUp>
     </CardDiv>
   );
 };
