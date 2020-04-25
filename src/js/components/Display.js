@@ -13,6 +13,12 @@ const DataDisplay = styled.div`
   padding: 10px;
   box-shadow: 1px 1px 8px #555555;
   font-family: 'PT Sans', sans-serif;
+  @media only screen and (max-width: 1040px) and (min-width: 721px) {
+    margin: 50px 5vw;
+  }
+  @media only screen and (max-width: 720px) {
+    margin: 50px 10px;
+  }
 `;
 const CountryDiv = styled.div`
   margin: 20px;
