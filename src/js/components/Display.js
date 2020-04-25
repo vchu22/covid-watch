@@ -57,12 +57,17 @@ class Display extends Component {
     const details = countriesData ? countriesData[selectedCountry] : {};
     const {
       country,
+      tests,
       cases,
-      deaths,
-      deathsPerOneMillion,
+      todayCases,
+      todayDeaths,
+      active,
       critical,
       recovered,
-      active,
+      deaths,
+      testsPerOneMillion,
+      casesPerOneMillion,
+      deathsPerOneMillion,
       countryInfo,
     } = details || {};
 
@@ -71,20 +76,41 @@ class Display extends Component {
         <CountryDiv>
           <img src={countryInfo.flag} /> {country}{' '}
         </CountryDiv>
-
-        <Card title="Total cases" number={cases} color="#ff6600"></Card>
-        <Card title="Deaths" number={deaths} color="#e60000"></Card>
-        {deathsPerOneMillion ? (
-          <Card
-            title="Deaths per Million"
-            number={deathsPerOneMillion}
-            color="#ff0066"
-          ></Card>
-        ) : null}
-        <Card title="Critical" number={critical} color="#6600cc"></Card>
-        <Card title="Recovery" number={recovered} color="#33cc33"></Card>
-        <Card title="Active" number={active} color="#0099ff"></Card>
-
+        <div>
+          <Card title="Tests" number={tests} color="#00cc66"></Card>
+          <Card title="Total Cases" number={cases} color="#6699ff"></Card>
+          <Card title="New Cases" number={todayCases} color="#ff6600"></Card>
+          <Card title="New Deaths" number={todayDeaths} color="#ff5050"></Card>
+        </div>
+        <div>
+          <Card title="Active" number={active} color="#0099ff"></Card>
+          <Card title="Critical" number={critical} color="#6600cc"></Card>
+          <Card title="Recovery" number={recovered} color="#33cc33"></Card>
+          <Card title="Deaths" number={deaths} color="#e60000"></Card>
+        </div>
+        <div>
+          {testsPerOneMillion ? (
+            <Card
+              title="Tests per Million"
+              number={testsPerOneMillion}
+              color="#11aa88"
+            ></Card>
+          ) : null}
+          {casesPerOneMillion ? (
+            <Card
+              title="Cases per Million"
+              number={casesPerOneMillion}
+              color="#0088ff"
+            ></Card>
+          ) : null}
+          {deathsPerOneMillion ? (
+            <Card
+              title="Deaths per Million"
+              number={deathsPerOneMillion}
+              color="#ff0066"
+            ></Card>
+          ) : null}
+        </div>
         <Chart />
       </DataDisplay>
     ) : null;

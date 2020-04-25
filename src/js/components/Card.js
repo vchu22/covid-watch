@@ -5,8 +5,8 @@ import CountUp from 'react-countup';
 const CardDiv = styled.div`
   background-color: #fff;
   display: inline-block;
-  padding: 5px 30px 30px;
-  margin: 20px;
+  padding: 0 30px 30px;
+  margin: 15px;
   box-shadow: 1px 1px 8px #aaaaaa;
   cursor: default;
   &:hover {
