@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import DataStore from '../store';
-import { fetchHistoricalData } from '../actions';
-import styled from 'styled-components';
-import Card from './Card';
-import Chart from './Chart';
+import React, { Component } from "react";
+import DataStore from "../store";
+import { fetchHistoricalData } from "../actions";
+import styled from "styled-components";
+import Card from "./Card";
+import Chart from "./Chart";
+import CasesMap from "./CasesMap";
 
 const DataDisplay = styled.div`
   font-size: 1.5em;
@@ -12,7 +13,7 @@ const DataDisplay = styled.div`
   margin: 50px 10vw;
   padding: 10px;
   box-shadow: 1px 1px 8px #555555;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   @media only screen and (max-width: 1040px) and (min-width: 721px) {
     margin: 50px 5vw;
   }
@@ -23,7 +24,7 @@ const DataDisplay = styled.div`
 const CountryDiv = styled.div`
   margin: 20px;
   font-size: 38px;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   & > img {
     width: 40px;
     height: 32px;
@@ -43,7 +44,7 @@ class Display extends Component {
 
   componentDidMount() {
     fetchHistoricalData(this.state.selectedCountry);
-    DataStore.on('change', () => {
+    DataStore.on("change", () => {
       this.setState({
         selectedCountry: DataStore.getSelectedCountry(),
         countriesData: DataStore.getCountriesData(),
@@ -74,7 +75,7 @@ class Display extends Component {
     return details ? (
       <DataDisplay>
         <CountryDiv>
-          <img src={countryInfo.flag} /> {country}{' '}
+          <img src={countryInfo.flag} /> {country}{" "}
         </CountryDiv>
         <div>
           <Card title="Tests" number={tests} color="#00cc66"></Card>
@@ -111,6 +112,7 @@ class Display extends Component {
             ></Card>
           ) : null}
         </div>
+        <CasesMap />
         <Chart />
       </DataDisplay>
     ) : null;

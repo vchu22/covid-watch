@@ -20,4 +20,8 @@ sketch
 # build files
 dist
 
+# environment variables
+.env
+.env.local
+
 # End of https://www.gitignore.io/api/react
