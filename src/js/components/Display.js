@@ -1,36 +1,11 @@
 import React, { Component } from "react";
 import DataStore from "../store";
 import { fetchHistoricalData } from "../actions";
-import styled from "styled-components";
+import DataDisplay from "./Styled/DataDisplay";
+import CountryDiv from "./Styled/CountryDiv";
 import Card from "./Card";
 import Chart from "./Chart";
 import CasesMap from "./CasesMap";
-
-const DataDisplay = styled.div`
-  font-size: 1.5em;
-  text-align: center;
-  background-color: WhiteSmoke;
-  margin: 50px 10vw;
-  padding: 10px;
-  box-shadow: 1px 1px 8px #555555;
-  font-family: "PT Sans", sans-serif;
-  @media only screen and (max-width: 1040px) and (min-width: 721px) {
-    margin: 50px 5vw;
-  }
-  @media only screen and (max-width: 720px) {
-    margin: 50px 10px;
-  }
-`;
-const CountryDiv = styled.div`
-  margin: 20px;
-  font-size: 38px;
-  font-family: "Raleway", sans-serif;
-  & > img {
-    width: 40px;
-    height: 32px;
-    margin: 0 10px;
-  }
-`;
 
 // Component
 class Display extends Component {
@@ -77,6 +52,7 @@ class Display extends Component {
         <CountryDiv>
           <img src={countryInfo.flag} /> {country}{" "}
         </CountryDiv>
+        <CasesMap />
         <div>
           <Card title="Tests" number={tests} color="#00cc66"></Card>
           <Card title="Total Cases" number={cases} color="#6699ff"></Card>
@@ -112,7 +88,6 @@ class Display extends Component {
             ></Card>
           ) : null}
         </div>
-        <CasesMap />
         <Chart />
       </DataDisplay>
     ) : null;
