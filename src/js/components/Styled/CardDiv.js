@@ -7,6 +7,7 @@ const CardDiv = styled.div`
   margin: 15px;
   box-shadow: 1px 1px 8px #aaaaaa;
   cursor: default;
+  line-height: 0.4em;
   &:hover {
     background-color: #f4f4f4;
   }
