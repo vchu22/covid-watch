@@ -25,3 +25,4 @@ dist
 .env.local
 
 # End of https://www.gitignore.io/api/react
+.now
