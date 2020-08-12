@@ -1,60 +1,27 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  ZoomableGroup,
+  Marker,
+} from "react-simple-maps";
 import DataStore from "../store";
 
-const Map = ReactMapboxGl({
-  accessToken: process.env.REACT_APP_MAPBOX_TOKEN,
-});
-const layerPaint = {
-  "heatmap-weight": {
-    property: "cases",
-    type: "exponential",
-    stops: [
-      [0, 0],
-      [10, 50],
-    ],
-  },
-  // Increase the heatmap color weight weight by zoom level
-  // heatmap-ntensity is a multiplier on top of heatmap-weight
-  "heatmap-intensity": {
-    stops: [
-      [0, 0],
-      [10, 10],
-    ],
-  },
-  // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-  // Begin color ramp at 0-stop with a 0-transparancy color
-  // to create a blur-like effect.
-  "heatmap-color": [
-    "interpolate",
-    ["linear"],
-    ["heatmap-density"],
-    0,
-    "rgba(33,102,172,0)",
-    0.25,
-    "rgb(255, 0, 0)",
-    0.5,
-    "rgb(230, 8, 8)",
-    0.8,
-    "rgb(179, 14, 14)",
-    1,
-    "rgb(153, 20, 20)",
-    2,
-    "rgb(102, 26, 26)",
-  ],
-  // Adjust the heatmap radius by zoom level
-  "heatmap-radius": {
-    stops: [
-      [0, 1],
-      [10, 50],
-    ],
-  },
-};
+// React Simple Maps
+const geoUrl =
+  "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
 class CasesMap extends Component {
   constructor() {
     super();
-    this.state = { coordinates: DataStore.getCoordinates() };
+    this.state = {
+      coordinates: DataStore.getCoordinates(),
+      zoom: 4,
+    };
+    this.handleZoomIn = this.handleZoomIn.bind(this);
+    this.handleZoomOut = this.handleZoomOut.bind(this);
+    this.handleMoveEnd = this.handleMoveEnd.bind(this);
   }
   componentDidMount() {
     DataStore.on("change", () => {
@@ -63,28 +30,97 @@ class CasesMap extends Component {
       });
     });
   }
+  handleZoomIn() {
+    if (this.state.zoom >= 16) return;
+    this.setState({
+      zoom: this.state.zoom * 2,
+    });
+  }
+
+  handleZoomOut() {
+    if (this.state.zoom <= 1) return;
+    this.setState({ zoom: this.state.zoom / 2 });
+  }
+
+  handleMoveEnd(position) {
+    this.setState({
+      coordinates: position.coordinates,
+      zoom: position.zoom,
+    });
+  }
+
   render() {
+    const { coordinates, zoom } = this.state;
     return (
-      <Map
-        style="mapbox://styles/mapbox/dark-v10"
-        containerStyle={{
-          height: "450px",
-          margin: "auto",
-        }}
-        center={this.state.coordinates}
-        zoom={[3]}
-      >
-        <Layer type="heatmap" paint={layerPaint}>
-          <Feature
-            coordinates={this.state.coordinates}
-            properties={{
-              cases: 4,
-            }}
-          ></Feature>
-        </Layer>
-      </Map>
+      <div>
+        <ComposableMap projection="geoMercator">
+          <ZoomableGroup
+            zoom={zoom}
+            center={coordinates}
+            onMoveEnd={this.handleMoveEnd}
+            minZoom={1}
+            maxZoom={16}
+          >
+            <Geographies geography={geoUrl}>
+              {({ geographies }) =>
+                geographies.map((geo) => (
+                  <Geography key={geo.rsmKey} geography={geo} />
+                ))
+              }
+            </Geographies>
+            <Marker coordinates={coordinates}>
+              <circle
+                r={8 / zoom}
+                fill="#F00"
+                stroke="#FF8888"
+                strokeWidth={4 / zoom}
+              />
+              <text
+                textAnchor="middle"
+                y={-10}
+                style={{
+                  fontFamily: "system-ui",
+                  fill: "#FFCC88",
+                  fontSize: 12,
+                }}
+              >
+                {this.props.countryName}
+              </text>
+            </Marker>
+          </ZoomableGroup>
+        </ComposableMap>
+        <div className="controls">
+          <Button handleZoom={this.handleZoomIn} dir="in" />
+          <Button handleZoom={this.handleZoomOut} dir="out" />
+        </div>
+      </div>
     );
   }
 }
+
+const Button = (props) => {
+  const { handleZoom, dir } = props;
+  return (
+    <button onClick={handleZoom}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        stroke="#000"
+        strokeWidth="3"
+      >
+        {dir === "in" ? (
+          <React.Fragment>
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </React.Fragment>
+        ) : (
+          <line x1="5" y1="12" x2="19" y2="12" />
+        )}
+      </svg>
+    </button>
+  );
+};
 
 export default CasesMap;

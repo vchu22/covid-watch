@@ -52,7 +52,7 @@ class Display extends Component {
         <CountryDiv>
           <img src={countryInfo.flag} /> {country}{" "}
         </CountryDiv>
-        <CasesMap />
+        <CasesMap countryName={selectedCountry} countriesData={countriesData} />
         <div>
           <Card title="Tests" number={tests} color="#00cc66"></Card>
           <Card title="Total Cases" number={cases} color="#6699ff"></Card>
