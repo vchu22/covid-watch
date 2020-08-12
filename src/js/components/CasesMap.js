@@ -44,7 +44,6 @@ class CasesMap extends Component {
 
   handleMoveEnd(position) {
     this.setState({
-      coordinates: position.coordinates,
       zoom: position.zoom,
     });
   }
@@ -53,7 +52,7 @@ class CasesMap extends Component {
     const { coordinates, zoom } = this.state;
     return (
       <div>
-        <ComposableMap projection="geoMercator">
+        <ComposableMap projection="geoMercator" height={400}>
           <ZoomableGroup
             zoom={zoom}
             center={coordinates}
@@ -77,11 +76,11 @@ class CasesMap extends Component {
               />
               <text
                 textAnchor="middle"
-                y={-10}
+                y={-20 / zoom}
                 style={{
                   fontFamily: "system-ui",
                   fill: "#FFCC88",
-                  fontSize: 12,
+                  fontSize: 30 / zoom,
                 }}
               >
                 {this.props.countryName}
