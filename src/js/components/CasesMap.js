@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -12,90 +12,72 @@ import DataStore from "../store";
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
-class CasesMap extends Component {
-  constructor() {
-    super();
-    this.state = {
-      coordinates: DataStore.getCoordinates(),
-      zoom: 4,
-    };
-    this.handleZoomIn = this.handleZoomIn.bind(this);
-    this.handleZoomOut = this.handleZoomOut.bind(this);
-    this.handleMoveEnd = this.handleMoveEnd.bind(this);
-  }
-  componentDidMount() {
-    DataStore.on("change", () => {
-      this.setState({
-        coordinates: DataStore.getCoordinates(),
-      });
-    });
-  }
-  handleZoomIn() {
-    if (this.state.zoom >= 16) return;
-    this.setState({
-      zoom: this.state.zoom * 2,
-    });
-  }
+const CasesMap = ({ countryName }) => {
+  const [coordinates, setCoordinates] = useState(DataStore.getCoordinates());
+  const [zoom, setZoom] = useState(4);
 
-  handleZoomOut() {
-    if (this.state.zoom <= 1) return;
-    this.setState({ zoom: this.state.zoom / 2 });
-  }
+  useEffect(() => {
+    setCoordinates(DataStore.getCoordinates());
+  }, [countryName]);
 
-  handleMoveEnd(position) {
-    this.setState({
-      zoom: position.zoom,
-    });
-  }
+  const handleZoomIn = () => {
+    if (zoom >= 16) return;
+    setZoom(zoom * 2);
+  };
+  const handleZoomOut = () => {
+    if (zoom <= 1) return;
+    setZoom(zoom / 2);
+  };
 
-  render() {
-    const { coordinates, zoom } = this.state;
-    return (
-      <div>
-        <ComposableMap projection="geoMercator" height={400}>
-          <ZoomableGroup
-            zoom={zoom}
-            center={coordinates}
-            onMoveEnd={this.handleMoveEnd}
-            minZoom={1}
-            maxZoom={16}
-          >
-            <Geographies geography={geoUrl}>
-              {({ geographies }) =>
-                geographies.map((geo) => (
-                  <Geography key={geo.rsmKey} geography={geo} />
-                ))
-              }
-            </Geographies>
-            <Marker coordinates={coordinates}>
-              <circle
-                r={8 / zoom}
-                fill="#F00"
-                stroke="#FF8888"
-                strokeWidth={4 / zoom}
-              />
-              <text
-                textAnchor="middle"
-                y={-20 / zoom}
-                style={{
-                  fontFamily: "system-ui",
-                  fill: "#FFCC88",
-                  fontSize: 30 / zoom,
-                }}
-              >
-                {this.props.countryName}
-              </text>
-            </Marker>
-          </ZoomableGroup>
-        </ComposableMap>
-        <div className="controls">
-          <Button handleZoom={this.handleZoomIn} dir="in" />
-          <Button handleZoom={this.handleZoomOut} dir="out" />
-        </div>
+  const handleMoveEnd = (position) => {
+    setZoom(position.zoom);
+  };
+
+  return (
+    <div>
+      <ComposableMap projection="geoMercator" height={400}>
+        <ZoomableGroup
+          zoom={zoom}
+          center={coordinates}
+          onMoveEnd={handleMoveEnd}
+          minZoom={1}
+          maxZoom={16}
+        >
+          <Geographies geography={geoUrl}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography key={geo.rsmKey} geography={geo} />
+              ))
+            }
+          </Geographies>
+          <Marker coordinates={coordinates}>
+            <circle
+              r={8 / zoom}
+              fill="#F00"
+              stroke="#FF8888"
+              strokeWidth={4 / zoom}
+            />
+            <text
+              textAnchor="middle"
+              y={-20 / zoom}
+              style={{
+                fontFamily: "system-ui",
+                fill: "#FFCC88",
+                fontSize: 30 / zoom,
+              }}
+            >
+              {countryName}
+            </text>
+          </Marker>
+        </ZoomableGroup>
+      </ComposableMap>
+      <div className="controls">
+        <Button handleZoom={handleZoomIn} dir="in" />
+        <Button handleZoom={handleZoomOut} dir="out" />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const Button = (props) => {
   const { handleZoom, dir } = props;

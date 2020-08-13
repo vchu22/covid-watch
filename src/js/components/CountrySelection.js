@@ -1,52 +1,41 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import DataStore from "../store";
-import { fetchCountriesData, changeCountry } from "../actions";
+import { changeCountry } from "../actions";
 import DropDownMenu from "./Styled/DropDownMenu";
 
-class CountrySelection extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedCountry: DataStore.getSelectedCountry(),
-      countriesData: DataStore.getCountriesData(),
-    };
-    this.handleChange = this.handleChange.bind(this);
-    fetchCountriesData();
-  }
-  handleChange(e) {
+const CountrySelection = () => {
+  const [selectedCountry, setSelectedCountry] = useState(
+    DataStore.getSelectedCountry()
+  );
+  const [countriesData, setCountriesData] = useState(
+    DataStore.getCountriesData()
+  );
+
+  const handleChange = (e) => {
     const selectedCountry = e.target.value;
     changeCountry(selectedCountry);
     DataStore.on("change", () => {
-      this.setState({
-        selectedCountry: DataStore.getSelectedCountry(),
-      });
+      setSelectedCountry(DataStore.getSelectedCountry());
     });
-  }
-  componentDidMount() {
+  };
+
+  useEffect(() => {
     DataStore.on("change", () => {
-      this.setState({
-        selectedCountry: DataStore.getSelectedCountry(),
-        countriesData: DataStore.getCountriesData(),
-      });
+      setSelectedCountry(DataStore.getSelectedCountry());
+      setCountriesData(DataStore.getCountriesData());
     });
-  }
-  render() {
-    let countries = this.state.countriesData
-      ? Object.keys(this.state.countriesData).sort()
-      : [];
-    return (
-      <DropDownMenu
-        value={this.state.selectedCountry}
-        onChange={this.handleChange}
-      >
-        {countries.map((country, idx) => (
-          <option key={idx} value={country}>
-            {country}
-          </option>
-        ))}
-      </DropDownMenu>
-    );
-  }
-}
+  }, []);
+
+  let countries = countriesData ? Object.keys(countriesData).sort() : [];
+  return (
+    <DropDownMenu value={selectedCountry} onChange={handleChange}>
+      {countries.map((country, idx) => (
+        <option key={idx} value={country}>
+          {country}
+        </option>
+      ))}
+    </DropDownMenu>
+  );
+};
 
 export default CountrySelection;
