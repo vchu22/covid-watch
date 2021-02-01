@@ -15,4 +15,4 @@ Data visualization for COVID-19 data
 
 ## Starting the app
 
-Navigate to this directory and type in `npm start` or `yarn start`. It should open up a window or new tab in your default browser.
+Navigate to this directory and type in `npm i` or `yarn install` to install all the required dependencies. Then, type in `npm start` or `yarn start` to start the server. It should open up a window or new tab in your default browser.
