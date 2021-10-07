@@ -1,4 +1,4 @@
-# COVID-19 Visualization
+# COVID-Watch
 
 Data visualization for COVID-19 data
 
