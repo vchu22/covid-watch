@@ -4,7 +4,7 @@ Data visualization for COVID-19 data
 
 ## Tech Stack
 
-- Data Source: [Novel COVID API](https://corona.lmao.ninja/)
+- Data Source: [Novel COVID API](https://disease.sh/)
 - Front End Tools:
   - Babel
   - Webpack

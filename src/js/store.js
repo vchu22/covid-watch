@@ -21,7 +21,7 @@ class DataStore extends EventEmitter {
   fetchCountriesData() {
     let countriesData = {};
     axios
-      .get("https://corona.lmao.ninja/v2/countries")
+      .get("https://disease.sh/v3/covid-19/countries")
       .then((res) => {
         res.data.forEach((elem) => {
           const name = elem.country;
@@ -39,7 +39,7 @@ class DataStore extends EventEmitter {
     let histData = [];
     if (country) {
       axios
-        .get(`https://corona.lmao.ninja/v2/historical/${country}`)
+        .get(`https://disease.sh/v3/covid-19/historical/${country}`)
         .then((res) => {
           const { cases, deaths, recovered } = res.data.timeline;
           for (let [date, c] of Object.entries(cases)) {
