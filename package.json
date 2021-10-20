@@ -46,6 +46,7 @@
     "react-simple-maps": "^2.1.2",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
+    "set-value": "4.0.1",
     "sockjs-client": "^1.4.0",
     "styled-components": "^5.0.1"
   }
