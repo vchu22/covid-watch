@@ -39,7 +39,7 @@
     "elliptic": "^6.5.4",
     "flux": "^4.0.2",
     "node-fetch": "^2.6.1",
-    "node-forge": "^0.10.0",
+    "node-forge": "^1.0.0",
     "react": "^16.13.1",
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
