@@ -10,7 +10,7 @@ import DataStore from "../store";
 
 // React Simple Maps
 const geoUrl =
-  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
+  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 const CasesMap = ({ countryName }) => {
   const [coordinates, setCoordinates] = useState(DataStore.getCoordinates());
